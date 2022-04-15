@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import React from 'react'
 import parse from 'html-react-parser';
 import { Link, useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 function Landing() {
   const navigation  = useNavigate();
@@ -16,7 +17,7 @@ function Landing() {
          params: { 'key': 'AIzaSyAeLdzShG4YJURfVEnqEb6joh8Bx2SFO_Y' }
       }).then((res) => {
         setPosts(res.data.items)
-         console.log(res.data.items)
+         //console.log(res.data.items)
       }).then((err) => console.log(err))
       setLoading(false)
     }
@@ -57,7 +58,7 @@ function Landing() {
                         <p className="post-meta">
                             Posted by&nbsp;
                             <a href="#!">{er.author.displayName}</a> &nbsp;
-                            {er.published}
+                            {moment(er.published).fromNow()}
                         </p><hr className="my-4" />
                     </div>
                   ))}

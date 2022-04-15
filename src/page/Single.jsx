@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import parse from 'html-react-parser';
+import moment  from 'moment';
 
 function Single() {
   const location = useLocation();
@@ -17,7 +18,7 @@ function Single() {
         let posts = res.data.items;
         let found = posts.find((pr) => pr.id === path);
         setPost(found)
-        console.log(found)
+        //console.log(found)
       }).then((err) => console.log(err))
       setLoading(false)
     }
@@ -43,7 +44,7 @@ function Single() {
                       {post?.author ?
                       (<a> {post?.author.displayName}</a>) :
                       (<a> 'Author'</a>) }
-                      &nbsp; {post?.published}
+                      &nbsp; {moment(post.published).fromNow()}
                     </span>
                   </div>
                 </div>
