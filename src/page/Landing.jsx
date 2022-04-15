@@ -7,21 +7,25 @@ import { Link, useNavigate } from 'react-router-dom';
 function Landing() {
   const navigation  = useNavigate();
     const [posts, setPosts] = useState([])
+    const [loading, setLoading] = useState(false)
   useEffect(() => {
+    
     const getPosts = async () => {
+      setLoading(true);
       await axios.get('https://www.googleapis.com/blogger/v3/blogs/2877298230409156118/posts', {
          params: { 'key': 'AIzaSyAeLdzShG4YJURfVEnqEb6joh8Bx2SFO_Y' }
       }).then((res) => {
         setPosts(res.data.items)
          console.log(res.data.items)
       }).then((err) => console.log(err))
+      setLoading(false)
     }
 
     getPosts();
   }, [])
 
-  function handleSinglePage(post){
-    //navigation.navigate("",post)
+  function handleReload(){
+    window.reload();
   }
   return (
     <div>
@@ -30,8 +34,8 @@ function Landing() {
                 <div className="row gx-4 gx-lg-5 justify-content-center">
                     <div className="col-md-10 col-lg-8 col-xl-7">
                         <div className="site-heading">
-                            <h1>Clean Blog</h1>
-                            <span className="subheading">A Blog Theme by Start Bootstrap</span>
+                            <h1>KEDE Blog</h1>
+                            {loading && (<p>Loading posts...</p>)}
                         </div>
                     </div>
                 </div>
@@ -42,7 +46,7 @@ function Landing() {
         <div className="container px-4 px-lg-5">
             <div className="row gx-4 gx-lg-5 justify-content-center">
                 <div className="col-md-10 col-lg-8 col-xl-7">
-                    
+                 {!posts && handleReload}   
                 {posts.map((er)=> (
                     <div className="post-preview" key={er.id}>
                         <Link to={`/post/${er.id}`}>
@@ -56,11 +60,11 @@ function Landing() {
                             {er.published}
                         </p><hr className="my-4" />
                     </div>
-                    ))}
+                  ))}
                     
                     {/* <!-- Post preview--> */}
                     
-                    <div className="d-flex justify-content-end mb-4"><a className="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+                    {/* <div className="d-flex justify-content-end mb-4"><a className="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div> */}
                 </div>
             </div>
         </div>

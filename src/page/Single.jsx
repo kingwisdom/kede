@@ -6,10 +6,11 @@ import parse from 'html-react-parser';
 function Single() {
   const location = useLocation();
   const path = location.pathname?.split("/")[2];
-
+  const [loading, setLoading] = useState(false)
   const [post, setPost] = useState({})
   useEffect(() => {
     const getPosts = async () => {
+      setLoading(true)
       await axios.get('https://www.googleapis.com/blogger/v3/blogs/2877298230409156118/posts', {
         params: { 'key': 'AIzaSyAeLdzShG4YJURfVEnqEb6joh8Bx2SFO_Y' }
       }).then((res) => {
@@ -18,6 +19,7 @@ function Single() {
         setPost(found)
         console.log(found)
       }).then((err) => console.log(err))
+      setLoading(false)
     }
 
     getPosts();
@@ -35,6 +37,7 @@ function Single() {
                 <div className="col-md-10 col-lg-8 col-xl-7">
                   <div className="post-heading">
                     <h1>{post?.title}</h1>
+                    {loading && (<p>Loading post...</p>)}
                     <span className="meta">
                       Posted by &nbsp;
                       {post?.author ?
